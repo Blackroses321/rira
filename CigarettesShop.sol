@@ -5,14 +5,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 
-contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
+contract ExclusiveCigarettesCrypto is ERC721AQueryable, Ownable, ReentrancyGuard {
 
     uint256 public constant TOTAL_SUPPLY = 10000;    
 
-    uint256 public seasonSupply = 2500; 
-    uint256 public pugCost = 22 ether;  
-    uint256 public pugWLCost = 11 ether;
-    uint256 public maxDalisPerMint = 20;
+    uint256 public seasonSupply = 9000; 
+    uint256 public Cost = 12 ether;  
+    uint256 public WLCost = 6 ether;
+    uint256 public maxCigarettesPerMint = 10;
 
     uint public charityProfit = 10;
     uint public artProfit = 35;
@@ -20,8 +20,8 @@ contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
     uint public marketingProfit = 10;
     uint public communityProfit = 10;
 
-    bool public pugMintPaused = false;
-    bool public pugRevealed = false;
+    bool public MintPaused = false;
+    bool public Revealed = false;
     bool public isWhiteListActive = false;
     bool public isPublicSaleActive = false;
 
@@ -54,26 +54,26 @@ contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
     }
     
     // Public functions
-    function pugMint(uint8 _mintAmount) external payable {
+    function Mint(uint8 _mintAmount) external payable {
         uint256 nextTokenId = _nextTokenId();
         uint8 whiteListAmount = whiteList[msg.sender];
 
-        require(!pugMintPaused, "The PUGtible's minting is paused by the moment");
+        require(!MintPaused, "The minting is paused by the moment");
         require(isWhiteListActive || isPublicSaleActive, "At least one type of sale must be active");
 
         require(_mintAmount > 0, "Provide mint amount major to 0");
-        require(_mintAmount <= maxDalisPerMint, "Max Dalis per mint reached"); 
+        require(_mintAmount <= maxCigarettesPerMint, "Max Cigarettes per mint reached"); 
         require(nextTokenId + _mintAmount - 1 <= seasonSupply, "Max season supply reached");
         require(nextTokenId + _mintAmount - 1 <= TOTAL_SUPPLY, "Max supply reached"); 
 
         if(isWhiteListActive && (whiteListAmount > 0)){
             if(_mintAmount <= whiteListAmount){
-                require(msg.value >= pugWLCost * _mintAmount, "Insufficient funds"); 
+                require(msg.value >= WLCost * _mintAmount, "Insufficient funds"); 
 
                 whiteList[msg.sender] -= _mintAmount;
                 _safeMint(msg.sender, _mintAmount);
             }else if(isPublicSaleActive){
-                require(msg.value >= (pugWLCost * whiteListAmount) + (pugCost * (_mintAmount - whiteListAmount)), "Insufficient funds"); 
+                require(msg.value >= (WLCost * whiteListAmount) + (Cost * (_mintAmount - whiteListAmount)), "Insufficient funds"); 
 
                 whiteList[msg.sender] -= whiteListAmount;
                 _safeMint(msg.sender, _mintAmount);
@@ -81,7 +81,7 @@ contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
                 require(_mintAmount <= whiteListAmount, "Exceeded max available to purchase");
             }
         }else if(isPublicSaleActive){
-            require(msg.value >= pugCost * _mintAmount, "Insufficient funds");   
+            require(msg.value >= Cost * _mintAmount, "Insufficient funds");   
 
             _safeMint(msg.sender, _mintAmount);
         }else{
@@ -98,7 +98,7 @@ contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
 
         string memory currentBaseURI = _baseURI();
 
-        if(pugRevealed == false) {      
+        if(Revealed == false) {      
             return bytes(currentBaseURI).length > 0 ? string(abi.encodePacked(currentBaseURI, "incognito.json")) : "";
         }else{       
             return bytes(currentBaseURI).length > 0 ? string(abi.encodePacked(currentBaseURI, _toString(tokenId), ".json")) : "";
@@ -111,12 +111,12 @@ contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
     }
 
     // Owner functions
-    function changeStatePugMintPause() external onlyOwner {
-        pugMintPaused = !pugMintPaused;
+    function changeStateMintPause() external onlyOwner {
+        MintPaused = !MintPaused;
     }
 
-    function changeStatePugReveal() external onlyOwner {
-        pugRevealed = !pugRevealed;
+    function changeStateReveal() external onlyOwner {
+        Revealed = !Revealed;
     }
 
     function changeStateIsWhiteListActive() external onlyOwner {
@@ -127,20 +127,20 @@ contract PUGtiblesPrestige is ERC721AQueryable, Ownable, ReentrancyGuard {
         isPublicSaleActive = !isPublicSaleActive;
     }
 
-    function setPugCost(uint256 _newPugCost) external onlyOwner {
-        pugCost = _newPugCost;
+    function setCost(uint256 _newCost) external onlyOwner {
+        Cost = _newCost;
     }
 
-    function setPugWLCost(uint256 _newPugWLCost) external onlyOwner {
-        pugWLCost = _newPugWLCost;
+    function setWLCost(uint256 _newWLCost) external onlyOwner {
+        WLCost = _newWLCost;
     }
 
     function setSeasonSupply(uint256 _newSeasonSupply) external onlyOwner {
         seasonSupply = _newSeasonSupply;
     }
 
-    function setMaxDalisPerMint(uint256 _newMaxDalisPerMint) external onlyOwner {
-        maxDalisPerMint = _newMaxDalisPerMint;
+    function setCigarettesPerMint(uint256 _newMaxCigarettesPerMint) external onlyOwner {
+        maxCigarettesPerMint = _newMaxCigarettesPerMint;
     }
 
     function setBaseURI(string calldata _newBaseURI) external onlyOwner {
