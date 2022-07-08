@@ -9,7 +9,7 @@ contract ExclusiveCigarettesCrypto is ERC721AQueryable, Ownable, ReentrancyGuard
 
     uint256 public constant TOTAL_SUPPLY = 10000;    
 
-    uint256 public seasonSupply = 9000; 
+    uint256 public FuckWorldSupply = 9000; 
     uint256 public Cost = 12 ether;  
     uint256 public WLCost = 6 ether;
     uint256 public maxCigarettesPerMint = 10;
@@ -63,7 +63,7 @@ contract ExclusiveCigarettesCrypto is ERC721AQueryable, Ownable, ReentrancyGuard
 
         require(_mintAmount > 0, "Provide mint amount major to 0");
         require(_mintAmount <= maxCigarettesPerMint, "Max Cigarettes per mint reached"); 
-        require(nextTokenId + _mintAmount - 1 <= seasonSupply, "Max season supply reached");
+        require(nextTokenId + _mintAmount - 1 <= FuckWorldSupply, "Max fuckworld supply reached");
         require(nextTokenId + _mintAmount - 1 <= TOTAL_SUPPLY, "Max supply reached"); 
 
         if(isWhiteListActive && (whiteListAmount > 0)){
@@ -135,8 +135,8 @@ contract ExclusiveCigarettesCrypto is ERC721AQueryable, Ownable, ReentrancyGuard
         WLCost = _newWLCost;
     }
 
-    function setSeasonSupply(uint256 _newSeasonSupply) external onlyOwner {
-        seasonSupply = _newSeasonSupply;
+    function setFuckWorldSupply(uint256 _newFuckWorldSupply) external onlyOwner {
+        FuckWorldSupply = _newFuckWorldSupply;
     }
 
     function setCigarettesPerMint(uint256 _newMaxCigarettesPerMint) external onlyOwner {
@@ -156,7 +156,7 @@ contract ExclusiveCigarettesCrypto is ERC721AQueryable, Ownable, ReentrancyGuard
     function ownerMint(address _addr, uint256 _mintAmount) external onlyOwner {
         uint256 nextTokenId = _nextTokenId();
 
-        require(nextTokenId + _mintAmount - 1 <= seasonSupply, "Max season supply reached");
+        require(nextTokenId + _mintAmount - 1 <= FuckWorldSupply, "Max FuckWorld supply reached");
         require(nextTokenId + _mintAmount - 1 <= TOTAL_SUPPLY, "Max supply reached"); 
 
         require(_mintAmount > 0, "Provide mint amount major to 0");
