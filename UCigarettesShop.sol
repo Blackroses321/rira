@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/Strings.sol';
-import 'IERC721A.sol';
-import 'ERC721AQueryable.sol';
-
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 
 contract CigarettesShop is ERC721AQueryable, Ownable {
   using Strings for uint256;
